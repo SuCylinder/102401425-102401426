@@ -1,164 +1,313 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>拾物 · 校园失物招领</title>
-<link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-<div class="phone">
-<div class="brand">拾物 · 校园失物招领</div>
-<div class="session-bar"><span id="mode-text">正在加载…</span><button id="visitor-toggle" type="button">访客预览</button><button id="refresh-items" type="button">刷新</button></div>
-<p id="notice" class="notice" role="status" aria-live="polite" hidden></p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拾物 · 校园失物招领</title>
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <div class="phone">
+      <div class="brand">拾物 · 校园失物招领</div>
+      <div class="session-bar">
+        <span id="mode-text">正在加载…</span
+        ><button id="visitor-toggle" type="button">访客预览</button
+        ><button id="refresh-items" type="button">刷新</button>
+      </div>
+      <p id="notice" class="notice" role="status" aria-live="polite" hidden></p>
 
-<!-- 首页 -->
-<section id="page-home" class="page">
-<div class="hero">
-<div class="hero-title">丢了东西？<br>来这里找找</div>
-<div class="hero-sub">发布线索，让每件物品都有回家的机会</div>
-<div class="hero-search" id="hero-search">
-<span class="mag">Q</span>
-<span class="hero-ph" id="hero-ph">搜物品、地点或关键词</span>
-</div>
-</div>
+      <!-- 首页 -->
+      <section id="page-home" class="page">
+        <div class="hero">
+          <div class="hero-title">丢了东西？<br />来这里找找</div>
+          <div class="hero-sub">发布线索，让每件物品都有回家的机会</div>
+          <div class="hero-search" id="hero-search">
+            <span class="mag">Q</span>
+            <span class="hero-ph" id="hero-ph">搜物品、地点或关键词</span>
+          </div>
+        </div>
 
-<div class="tabs">
-<button class="tab tab-lost active" id="tab-lost">寻物信息</button>
-<button class="tab tab-found" id="tab-found">招领信息</button>
-</div>
+        <div class="tabs">
+          <button class="tab tab-lost active" id="tab-lost">寻物信息</button>
+          <button class="tab tab-found" id="tab-found">招领信息</button>
+        </div>
 
-<div class="list-head">
-<span class="list-title">最新信息</span>
-<span class="list-sort">按发布时间排列</span>
-</div>
-<div id="list"></div>
-<label class="mine-toggle"><input id="my-only" type="checkbox"> 只看我的发布</label>
+        <div class="list-head">
+          <span class="list-title">最新信息</span>
+          <span class="list-sort">按发布时间排列</span>
+        </div>
+        <div id="list"></div>
+        <label class="mine-toggle"
+          ><input id="my-only" type="checkbox" /> 只看我的发布</label
+        >
 
-<button class="btn-primary" id="home-publish">＋ 发布一条信息</button>
+        <button class="btn-primary" id="home-publish">＋ 发布一条信息</button>
 
-<div class="tabbar">
-<button class="tabbar-item active" data-go="page-home">●<span>首页</span></button>
-<button class="tabbar-item" data-go="page-search">○<span>搜索</span></button>
-<button class="tabbar-item" data-go="page-publish">○<span>发布</span></button>
-</div>
-</section>
+        <div class="tabbar">
+          <button class="tabbar-item active" data-go="page-home">
+            ●<span>首页</span>
+          </button>
+          <button class="tabbar-item" data-go="page-search">
+            ○<span>搜索</span>
+          </button>
+          <button class="tabbar-item" data-go="page-publish">
+            ○<span>发布</span>
+          </button>
+        </div>
+      </section>
 
-<!-- 发布页 -->
-<section id="page-publish" class="page" style="display:none">
-<div class="topbar"><button class="backbtn" data-go="page-home">‹</button><span class="toptitle" id="publish-title">发布寻物</span></div>
-<p class="subtitle">信息越清楚，越容易找到线索。带 <span class="required-mark">*</span> 的项目为必填。</p>
-<div class="seg">
-<button id="seg-lost" class="seg-btn active">发布寻物</button>
-<button id="seg-found" class="seg-btn">发布招领</button>
-</div>
-<label class="fld">物品名称 <span class="required-mark" aria-hidden="true">*</span><input id="f-name" required maxlength="80" aria-label="物品名称" aria-describedby="hint-name" placeholder="如：黑色折叠伞"><small class="field-hint" id="hint-name">必填，最多 80 字</small></label>
-<label class="fld">物品类别（选填）<input id="f-category" list="category-options" maxlength="40" aria-label="物品类别" aria-describedby="hint-category" placeholder="选择常用类别或自行填写"><small class="field-hint" id="hint-category">建议选择常用类别，方便筛选；也可自填，最多 40 字</small></label>
-<datalist id="category-options">
-<option value="日用品"></option>
-<option value="证件卡片"></option>
-<option value="电子设备"></option>
-<option value="学习用品"></option>
-<option value="衣物配饰"></option>
-<option value="钥匙"></option>
-<option value="其他"></option>
-</datalist>
-<label class="fld"><span id="label-place">丢失地点</span> <span class="required-mark" aria-hidden="true">*</span><input id="f-place" required maxlength="120" aria-labelledby="label-place" aria-describedby="hint-place" placeholder="如：西一教学楼一楼走廊"><small class="field-hint" id="hint-place">必填，最多 120 字</small></label>
-<label class="fld"><span id="label-time">丢失时间</span> <span class="required-mark" aria-hidden="true">*</span><input id="f-time" type="datetime-local" required step="60" aria-labelledby="label-time" aria-describedby="hint-time"><small class="field-hint" id="hint-time">必填，请选择日期和时间（精确到分钟）</small></label>
-<label class="fld">物品特征（选填）<textarea id="f-feature" rows="3" maxlength="1000" aria-label="物品特征" aria-describedby="hint-feature" placeholder="如：黑色三折伞，伞柄有蓝色挂绳。"></textarea><small class="field-hint" id="hint-feature">最多 1000 字</small></label>
-<label class="fld">联系方式 <span class="required-mark" aria-hidden="true">*</span><input id="f-contact" required maxlength="200" aria-label="联系方式" aria-describedby="hint-contact" placeholder="如：QQ 123456"><small class="field-hint" id="hint-contact">必填，最多 200 字</small></label>
-<button class="btn-primary" id="btn-publish">发布信息</button>
-<p class="hint">提交后展示成功反馈，信息加入最新列表</p>
-<button class="btn-ghost backbtn2" data-go="page-home">返回首页</button>
-</section>
+      <!-- 发布页 -->
+      <section id="page-publish" class="page" style="display: none">
+        <div class="topbar">
+          <button class="backbtn" data-go="page-home">‹</button
+          ><span class="toptitle" id="publish-title">发布寻物</span>
+        </div>
+        <p class="subtitle">
+          信息越清楚，越容易找到线索。带
+          <span class="required-mark">*</span> 的项目为必填。
+        </p>
+        <div class="seg">
+          <button id="seg-lost" class="seg-btn active">发布寻物</button>
+          <button id="seg-found" class="seg-btn">发布招领</button>
+        </div>
+        <label class="fld"
+          >物品名称 <span class="required-mark" aria-hidden="true">*</span
+          ><input
+            id="f-name"
+            required
+            maxlength="80"
+            aria-label="物品名称"
+            aria-describedby="hint-name"
+            placeholder="如：黑色折叠伞"
+          /><small class="field-hint" id="hint-name"
+            >必填，最多 80 字</small
+          ></label
+        >
+        <label class="fld"
+          >物品类别（选填）<input
+            id="f-category"
+            list="category-options"
+            maxlength="40"
+            aria-label="物品类别"
+            aria-describedby="hint-category"
+            placeholder="选择常用类别或自行填写"
+          /><small class="field-hint" id="hint-category"
+            >建议选择常用类别，方便筛选；也可自填，最多 40 字</small
+          ></label
+        >
+        <datalist id="category-options">
+          <option value="日用品"></option>
+          <option value="证件卡片"></option>
+          <option value="电子设备"></option>
+          <option value="学习用品"></option>
+          <option value="衣物配饰"></option>
+          <option value="钥匙"></option>
+          <option value="其他"></option>
+        </datalist>
+        <label class="fld"
+          ><span id="label-place">丢失地点</span>
+          <span class="required-mark" aria-hidden="true">*</span
+          ><input
+            id="f-place"
+            required
+            maxlength="120"
+            aria-labelledby="label-place"
+            aria-describedby="hint-place"
+            placeholder="如：西一教学楼一楼走廊"
+          /><small class="field-hint" id="hint-place"
+            >必填，最多 120 字</small
+          ></label
+        >
+        <label class="fld"
+          ><span id="label-time">丢失时间</span>
+          <span class="required-mark" aria-hidden="true">*</span
+          ><input
+            id="f-time"
+            type="datetime-local"
+            required
+            step="60"
+            aria-labelledby="label-time"
+            aria-describedby="hint-time"
+          /><small class="field-hint" id="hint-time"
+            >必填，请选择日期和时间（精确到分钟）</small
+          ></label
+        >
+        <label class="fld"
+          >物品特征（选填）<textarea
+            id="f-feature"
+            rows="3"
+            maxlength="1000"
+            aria-label="物品特征"
+            aria-describedby="hint-feature"
+            placeholder="如：黑色三折伞，伞柄有蓝色挂绳。"
+          ></textarea
+          ><small class="field-hint" id="hint-feature"
+            >最多 1000 字</small
+          ></label
+        >
+        <label class="fld"
+          >联系方式 <span class="required-mark" aria-hidden="true">*</span
+          ><input
+            id="f-contact"
+            required
+            maxlength="200"
+            aria-label="联系方式"
+            aria-describedby="hint-contact"
+            placeholder="如：QQ 123456"
+          /><small class="field-hint" id="hint-contact"
+            >必填，最多 200 字</small
+          ></label
+        >
+        <button class="btn-primary" id="btn-publish">发布信息</button>
+        <p class="hint">提交后展示成功反馈，信息加入最新列表</p>
+        <button class="btn-ghost backbtn2" data-go="page-home">返回首页</button>
+      </section>
 
-<!-- 搜索页 -->
-<section id="page-search" class="page" style="display:none">
-<div class="topbar"><button class="backbtn" data-go="page-home">←</button><span class="toptitle">搜索物品</span></div>
-<p class="subtitle">按名称、地点查找寻物或招领信息</p>
-<div class="searchbar">
-<input id="s-keyword" placeholder="如：水杯">
-<button id="btn-search">搜索</button>
-</div>
-<div class="filter-label">信息类型</div>
-<div class="pills" id="filter-type">
-<button class="pill active" data-v="全部">全部</button>
-<button class="pill" data-v="寻物">寻物</button>
-<button class="pill" data-v="招领">招领</button>
-</div>
-<div class="filter-label">处理状态</div>
-<div class="pills" id="filter-status">
-<button class="pill active" data-v="全部">全部</button>
-<button class="pill" data-v="进行中">进行中</button>
-<button class="pill" data-v="已处理">已处理</button>
-</div>
-<div class="select-filters"><label>物品类别<select id="filter-category"><option value="">全部</option></select></label><label>地点<select id="filter-place"><option value="">全部</option></select></label></div>
-<button class="btn-ghost" id="reset-search" type="button">清除全部筛选</button>
-<div class="tip-card" id="search-tip">
-<div class="tip-title"><span class="tip-icon">Q</span><span id="search-empty-title"></span></div>
-<p class="tip-text" id="search-empty-text"></p>
-</div>
-<div id="search-count" class="count"></div>
-<div id="search-result"></div>
-<div class="filter-label">常见物品</div>
-<div class="pills">
-<button class="pill pill-blue quick" data-k="水杯">水杯</button>
-<button class="pill pill-blue quick" data-k="雨伞">雨伞</button>
-<button class="pill pill-blue quick" data-k="钥匙">钥匙</button>
-</div>
-<button class="btn-primary backbtn2" data-go="page-home">返回首页</button>
-</section>
+      <!-- 搜索页 -->
+      <section id="page-search" class="page" style="display: none">
+        <div class="topbar">
+          <button class="backbtn" data-go="page-home">←</button
+          ><span class="toptitle">搜索物品</span>
+        </div>
+        <p class="subtitle">按名称、地点查找寻物或招领信息</p>
+        <div class="searchbar">
+          <input id="s-keyword" placeholder="如：水杯" />
+          <button id="btn-search">搜索</button>
+        </div>
+        <div class="filter-label">信息类型</div>
+        <div class="pills" id="filter-type">
+          <button class="pill active" data-v="全部">全部</button>
+          <button class="pill" data-v="寻物">寻物</button>
+          <button class="pill" data-v="招领">招领</button>
+        </div>
+        <div class="filter-label">处理状态</div>
+        <div class="pills" id="filter-status">
+          <button class="pill active" data-v="全部">全部</button>
+          <button class="pill" data-v="进行中">进行中</button>
+          <button class="pill" data-v="已处理">已处理</button>
+        </div>
+        <div class="select-filters">
+          <label
+            >物品类别<select id="filter-category">
+              <option value="">全部</option>
+            </select></label
+          ><label
+            >地点<select id="filter-place">
+              <option value="">全部</option>
+            </select></label
+          >
+        </div>
+        <button class="btn-ghost" id="reset-search" type="button">
+          清除全部筛选
+        </button>
+        <div class="tip-card" id="search-tip">
+          <div class="tip-title">
+            <span class="tip-icon">Q</span><span id="search-empty-title"></span>
+          </div>
+          <p class="tip-text" id="search-empty-text"></p>
+        </div>
+        <div id="search-count" class="count"></div>
+        <div id="search-result"></div>
+        <div class="filter-label">常见物品</div>
+        <div class="pills">
+          <button class="pill pill-blue quick" data-k="水杯">水杯</button>
+          <button class="pill pill-blue quick" data-k="雨伞">雨伞</button>
+          <button class="pill pill-blue quick" data-k="钥匙">钥匙</button>
+        </div>
+        <button class="btn-primary backbtn2" data-go="page-home">
+          返回首页
+        </button>
+      </section>
 
-<!-- 详情页 -->
-<section id="page-detail" class="page" style="display:none">
-<div class="topbar"><button class="backbtn" id="detail-back" aria-label="返回列表">‹</button><span class="toptitle">信息详情</span></div>
-<h2 id="d-name" class="d-name"></h2>
-<div class="d-pills"><span id="d-type" class="mini-pill blue"></span><span id="d-status" class="mini-pill green"></span></div>
-<div class="info-card">
-<div class="info-row"><span class="info-k">物品类别</span><span class="info-v" id="d-category"></span></div>
-<div class="info-row"><span class="info-k" id="d-k-place">拾获地点</span><span class="info-v" id="d-place"></span></div>
-<div class="info-row"><span class="info-k" id="d-k-time">拾获时间</span><span class="info-v" id="d-time"></span></div>
-<div class="info-div"></div>
-<div class="info-col"><span class="info-k">物品特征</span><span class="info-v" id="d-feature"></span></div>
-</div>
-<button class="btn-primary" id="btn-contact">联系发布者</button>
-<button class="btn-white" id="btn-done">标记为已归还</button>
-<p class="hint" id="owner-tip"></p>
-<button class="btn-ghost backbtn2" id="detail-return">返回首页</button>
-</section>
+      <!-- 详情页 -->
+      <section id="page-detail" class="page" style="display: none">
+        <div class="topbar">
+          <button class="backbtn" id="detail-back" aria-label="返回列表">
+            ‹</button
+          ><span class="toptitle">信息详情</span>
+        </div>
+        <h2 id="d-name" class="d-name"></h2>
+        <div class="d-pills">
+          <span id="d-type" class="mini-pill blue"></span
+          ><span id="d-status" class="mini-pill green"></span>
+        </div>
+        <div class="info-card">
+          <div class="info-row">
+            <span class="info-k">物品类别</span
+            ><span class="info-v" id="d-category"></span>
+          </div>
+          <div class="info-row">
+            <span class="info-k" id="d-k-place">拾获地点</span
+            ><span class="info-v" id="d-place"></span>
+          </div>
+          <div class="info-row">
+            <span class="info-k" id="d-k-time">拾获时间</span
+            ><span class="info-v" id="d-time"></span>
+          </div>
+          <div class="info-div"></div>
+          <div class="info-col">
+            <span class="info-k">物品特征</span
+            ><span class="info-v" id="d-feature"></span>
+          </div>
+        </div>
+        <button class="btn-primary" id="btn-contact">联系发布者</button>
+        <button class="btn-white" id="btn-done">标记为已归还</button>
+        <p class="hint" id="owner-tip"></p>
+        <button class="btn-ghost backbtn2" id="detail-return">返回首页</button>
+      </section>
 
-<!-- 发布成功 -->
-<section id="page-success" class="page center" style="display:none">
-<div class="topbar"><button class="backbtn" data-go="page-home">‹</button><span class="toptitle">发布成功</span></div>
-<div class="check">✓</div>
-<h2>发布成功</h2>
-<p class="subtitle">信息已加入最新列表<br>你可以继续浏览其他失物信息</p>
-<button class="btn-primary backbtn2" data-go="page-home">返回首页</button>
-<button class="btn-white" id="btn-again">继续发布</button>
-</section>
+      <!-- 发布成功 -->
+      <section id="page-success" class="page center" style="display: none">
+        <div class="topbar">
+          <button class="backbtn" data-go="page-home">‹</button
+          ><span class="toptitle">发布成功</span>
+        </div>
+        <div class="check">✓</div>
+        <h2>发布成功</h2>
+        <p class="subtitle">
+          信息已加入最新列表<br />你可以继续浏览其他失物信息
+        </p>
+        <button class="btn-primary backbtn2" data-go="page-home">
+          返回首页
+        </button>
+        <button class="btn-white" id="btn-again">继续发布</button>
+      </section>
 
-<!-- 联系提示 -->
-<section id="page-contact" class="page center" style="display:none">
-<div class="topbar"><button class="backbtn" data-go="page-detail">‹</button><span class="toptitle">联系提示</span></div>
-<div class="mail">✉</div>
-<h2>联系发布者</h2>
-<p id="contact-text" class="contact-text">qq: xxxxxxxxxxxx</p>
-<button class="btn-primary" id="btn-copy">一键复制联系方式</button>
-<button class="btn-ghost backbtn2" data-go="page-detail">返回信息详情</button>
-</section>
+      <!-- 联系提示 -->
+      <section id="page-contact" class="page center" style="display: none">
+        <div class="topbar">
+          <button class="backbtn" data-go="page-detail">‹</button
+          ><span class="toptitle">联系提示</span>
+        </div>
+        <div class="mail">✉</div>
+        <h2>联系发布者</h2>
+        <p id="contact-text" class="contact-text">qq: xxxxxxxxxxxx</p>
+        <button class="btn-primary" id="btn-copy">一键复制联系方式</button>
+        <button class="btn-ghost backbtn2" data-go="page-detail">
+          返回信息详情
+        </button>
+      </section>
 
-<!-- 状态更新 -->
-<section id="page-done" class="page center" style="display:none">
-<div class="topbar"><button class="backbtn" data-go="page-home">‹</button><span class="toptitle">状态已更新</span></div>
-<div class="check">✓</div>
-<h2 id="done-title">已标记为已归还</h2>
-<p class="subtitle">这条信息的处理状态已更新。<br>返回首页可继续查看其他信息。</p>
-<button class="btn-primary backbtn2" data-go="page-home">返回首页</button>
-<button class="btn-white backbtn2" data-go="page-detail">返回详情</button>
-</section>
-
-</div>
-<script src="assets/core.js"></script>
-<script src="assets/app.js"></script>
-</body>
+      <!-- 状态更新 -->
+      <section id="page-done" class="page center" style="display: none">
+        <div class="topbar">
+          <button class="backbtn" data-go="page-home">‹</button
+          ><span class="toptitle">状态已更新</span>
+        </div>
+        <div class="check">✓</div>
+        <h2 id="done-title">已标记为已归还</h2>
+        <p class="subtitle">
+          这条信息的处理状态已更新。<br />返回首页可继续查看其他信息。
+        </p>
+        <button class="btn-primary backbtn2" data-go="page-home">
+          返回首页
+        </button>
+        <button class="btn-white backbtn2" data-go="page-detail">
+          返回详情
+        </button>
+      </section>
+    </div>
+    <script src="assets/core.js"></script>
+    <script src="assets/app.js"></script>
+  </body>
 </html>
